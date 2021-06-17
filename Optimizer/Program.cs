@@ -9,7 +9,7 @@ namespace Optimizer
         static void Main(string[] args)
         {
             var graph = new Graph();
-            // Create three sections
+            // Create four sections
             var a = graph.GenerateNodes("A", 10);
             var b = graph.GenerateNodes("B", 5);
             var c = graph.GenerateNodes("C", 3);
@@ -42,23 +42,22 @@ namespace Optimizer
             
             // Set entrance to hotel B at fifth node in section B
             b[4].PropagateRoutingTable("B", 0);
-            
+
+            c[2].PropagateRoutingTable("C", 0);
+            d[2].PropagateRoutingTable("D", 0);
+
             foreach (var node in graph.Nodes)
             {
-                //Console.WriteLine($"{node.Value.WriteRoutingTable()}" );
+                Console.WriteLine($"{node.Value.WriteRoutingTable()}" );
             }
 
-            var customers = new List<Customer>();
-            var availableSpots = graph.Nodes.Values.ToList();
-            for (int i = 0; i < graph.Nodes.Count; i++)
+            var customers = CustomerGenerator.CreateCustomers(new Dictionary<string, int>()
             {
-                Customer customer = new Customer()
-                {
-                    Hotel = i % 3 == 0 ? "B" : "A",
-                    Priority = i
-                };
-                customers.Add(customer);
-            }
+                ["A"] = a.Count,
+                ["B"] = b.Count,
+                ["C"] = c.Count,
+                ["D"] = d.Count
+            });
 
             List<IParkingOptimizer> optimizers = new List<IParkingOptimizer>()
             {
@@ -76,16 +75,35 @@ namespace Optimizer
         }
     }
 
-    internal class ParkingScorer
+    public static class CustomerGenerator
     {
-        public static void Score(List<ParkingAssignment> assignments)
+        public static List<Customer> CreateCustomers(Dictionary<string, int> customersPerHotel)
         {
-            var max = assignments.Max(x => x.GetWalkingDistance());
-            var min = assignments.Min(x => x.GetWalkingDistance());
-            var average = assignments.Average(x => x.GetWalkingDistance());
-            var median = assignments[assignments.Count / 2].GetWalkingDistance();
-            
-            Console.WriteLine($"Min: {min}, Max: {max}, Avg: {average}, Median: {median}");
+            List<Customer> customers = new List<Customer>();
+            foreach (var val in customersPerHotel)
+            {
+                for (int i = 0; i < val.Value; i++)
+                {
+                    Customer customer = new Customer()
+                    {
+                        Hotel = val.Key
+                    };
+                    customers.Add(customer);
+                }
+            }
+
+            // static seed the same so order of customers are always the same,
+            // so we can compare results between runs.
+            // Alter this number to get different permutation
+            Random r = new Random(1234); 
+            customers = customers.OrderBy(_ => r.Next()).ToList();
+            for (var i = 0; i < customers.Count; i++)
+            {
+                var customer = customers[i];
+                customer.Priority = i;
+            }
+
+            return customers;
         }
     }
 }
