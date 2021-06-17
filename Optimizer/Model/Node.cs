@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace Optimizer
 {
+    /// <summary>
+    /// Represents a parking spot
+    /// </summary>
     public class Node
     {
         public string Id { get; }

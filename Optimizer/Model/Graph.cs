@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace Optimizer
 {
+    /// <summary>
+    /// Represents the parking garage
+    /// </summary>
     public class Graph
     {
         public Dictionary<string, Node> Nodes { get; } = new Dictionary<string, Node>();

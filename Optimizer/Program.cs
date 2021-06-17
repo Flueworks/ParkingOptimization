@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Optimizer
 {
@@ -46,7 +48,36 @@ namespace Optimizer
                 Console.WriteLine($"{node.Value.WriteRoutingTable()}" );
             }
 
+            var customers = new List<Customer>();
+            var availableSpots = graph.Nodes.Values.ToList();
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                Customer customer = new Customer()
+                {
+                    Name = i.ToString(),
+                    Hotel = i % 3 == 0 ? "B" : "A"
+                };
+                customers.Add(customer);
+            }
+
+            ParkingOptimizer.AssignParkingSpots(graph, customers);
+
+            ParkingScorer.Score(customers);
+
             Console.WriteLine("Hello World!");
+        }
+    }
+
+    internal class ParkingScorer
+    {
+        public static void Score(List<Customer> customers)
+        {
+            var max = customers.Max(x => x.GetWalkingDistance());
+            var min = customers.Min(x => x.GetWalkingDistance());
+            var average = customers.Average(x => x.GetWalkingDistance());
+            var median = customers[customers.Count / 2].GetWalkingDistance();
+            
+            Console.WriteLine($"Min: {min}, Max: {max}, Avg: {average}, Median: {median}");
         }
     }
 }
