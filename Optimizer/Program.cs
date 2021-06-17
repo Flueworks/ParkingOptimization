@@ -40,8 +40,8 @@ namespace Optimizer
             // Set entrance to hotel A at sixth node in section A 
             a[5].PropagateRoutingTable("A", 0);
             
-            // Set entrance to hotel B at fourth node in section B
-            b[3].PropagateRoutingTable("B", 0);
+            // Set entrance to hotel B at fifth node in section B
+            b[4].PropagateRoutingTable("B", 0);
             
             foreach (var node in graph.Nodes)
             {
@@ -54,8 +54,8 @@ namespace Optimizer
             {
                 Customer customer = new Customer()
                 {
-                    Name = i.ToString(),
-                    Hotel = i % 3 == 0 ? "B" : "A"
+                    Hotel = i % 3 == 0 ? "B" : "A",
+                    Priority = i
                 };
                 customers.Add(customer);
             }
