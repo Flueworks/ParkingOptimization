@@ -45,7 +45,7 @@ namespace Optimizer
             
             foreach (var node in graph.Nodes)
             {
-                Console.WriteLine($"{node.Value.WriteRoutingTable()}" );
+                //Console.WriteLine($"{node.Value.WriteRoutingTable()}" );
             }
 
             var customers = new List<Customer>();
@@ -68,12 +68,11 @@ namespace Optimizer
 
             foreach (var optimizer in optimizers)
             {
+                Console.WriteLine(optimizer.GetType().Name);
                 var assignments = optimizer.AssignParkingSpots(graph, customers);
                 ParkingScorer.Score(assignments);
+                Console.WriteLine();
             }
-            
-            
-            Console.WriteLine("Hello World!");
         }
     }
 
