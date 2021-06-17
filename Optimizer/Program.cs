@@ -60,22 +60,31 @@ namespace Optimizer
                 customers.Add(customer);
             }
 
-            ParkingOptimizer.AssignParkingSpots(graph, customers);
+            List<IParkingOptimizer> optimizers = new List<IParkingOptimizer>()
+            {
+                new ParkingZoneOptimizer(),
+                new FirstAndBestSpotOptimizer(),
+            };
 
-            ParkingScorer.Score(customers);
-
+            foreach (var optimizer in optimizers)
+            {
+                var assignments = optimizer.AssignParkingSpots(graph, customers);
+                ParkingScorer.Score(assignments);
+            }
+            
+            
             Console.WriteLine("Hello World!");
         }
     }
 
     internal class ParkingScorer
     {
-        public static void Score(List<Customer> customers)
+        public static void Score(List<ParkingAssignment> assignments)
         {
-            var max = customers.Max(x => x.GetWalkingDistance());
-            var min = customers.Min(x => x.GetWalkingDistance());
-            var average = customers.Average(x => x.GetWalkingDistance());
-            var median = customers[customers.Count / 2].GetWalkingDistance();
+            var max = assignments.Max(x => x.GetWalkingDistance());
+            var min = assignments.Min(x => x.GetWalkingDistance());
+            var average = assignments.Average(x => x.GetWalkingDistance());
+            var median = assignments[assignments.Count / 2].GetWalkingDistance();
             
             Console.WriteLine($"Min: {min}, Max: {max}, Avg: {average}, Median: {median}");
         }
