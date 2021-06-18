@@ -11,16 +11,21 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Canvas Name="nodeCanvas" Height="10000" Width="10000">
+        <Canvas Name="nodeCanvas" Height="10000" Width="10000" Background="White"
+                MouseEnter="nodeCanvas_MouseEnter"
+                MouseMove="nodeCanvas_MouseMove"
+                MouseDown="nodeCanvas_MouseDown"
+                MouseWheel="nodeCanvas_MouseWheel"
+                MouseUp="nodeCanvas_MouseUp">
             <Canvas.RenderTransform>
                 <TransformGroup>
-                    <TranslateTransform X="{Binding ElementName=main, Path=TranslateX}" 
-                                        Y="{Binding ElementName=main, Path=TranslateY}" />
+                    <TranslateTransform X="{Binding Path=TranslateX}" 
+                                        Y="{Binding Path=TranslateY}" />
                     <ScaleTransform 
-                        ScaleX="{Binding ElementName=main, Path=ScaleFactor}" 
-                        ScaleY="{Binding ElementName=main, Path=ScaleFactor}"
-                        CenterX="{Binding ElementName=main, Path=ScaleOriginX}"
-                        CenterY="{Binding ElementName=main, Path=ScaleOriginY}"
+                        ScaleX="{Binding Path=ScaleFactor}" 
+                        ScaleY="{Binding Path=ScaleFactor}"
+                        CenterX="{Binding Path=ScaleOriginX}"
+                        CenterY="{Binding Path=ScaleOriginY}"
                     />
                 </TransformGroup>
             </Canvas.RenderTransform>
