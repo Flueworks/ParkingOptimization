@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Optimizer
+namespace Optimizer.Optimizers
 {
     /// <summary>
     /// Finds the first and best spot for the customer. Does not adhere to zones.
@@ -18,6 +18,23 @@ namespace Optimizer
                 var bestParkingSpot = freeParkingSpots.OrderBy(x => x.RoutingTable[customer.Hotel]).First();
                 freeParkingSpots.Remove(bestParkingSpot);
                 result.Add(new ParkingAssignment(customer,bestParkingSpot));
+            }
+
+            return result;
+        }
+    }
+
+    public class NotOptimized : IParkingOptimizer
+    {
+        /// <inheritdoc />
+        public List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers)
+        {
+            List<ParkingAssignment> result = new List<ParkingAssignment>();
+            var spots = graph.Nodes.Values.ToList();
+
+            for (int i = 0; i < spots.Count; i++)
+            {
+                result.Add(new ParkingAssignment(customers[i], spots[i]));
             }
 
             return result;

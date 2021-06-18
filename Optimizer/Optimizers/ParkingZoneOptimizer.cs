@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Optimizer
+namespace Optimizer.Optimizers
 {
     public class ParkingZoneOptimizer : IParkingOptimizer
     {
         public List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers)
         {
-            var sections = graph.Nodes.Values.GroupBy(x => x.Id.Split("-")[0]).ToDictionary(x=>x.Key, x=>x.Select(y=>y).ToList());
+            var sections = graph.Nodes.Values.GroupBy(x => x.BranchId).ToDictionary(x=>x.Key, x=>x.Select(y=>y).ToList());
 
-            List<ParkingAssignment> result = new List<ParkingAssignment>();
+            var result = new List<ParkingAssignment>();
 
-            List<Node> freeParkingSpots = graph.Nodes.Values.ToList();
-            List<Customer> remainingCustomers = customers.ToList();
+            var freeParkingSpots = graph.Nodes.Values.ToList();
+            var remainingCustomers = customers.ToList();
             foreach (var section in sections)
             {
                 var parkingSpotsInSection = section.Value;

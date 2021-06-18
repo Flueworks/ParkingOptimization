@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
+using Optimizer.Optimizers;
 using Optimizer.Visualizer;
 
 namespace Optimizer
@@ -70,16 +71,14 @@ namespace Optimizer
             {
                 new ParkingZoneOptimizer(),
                 new FirstAndBestSpotOptimizer(),
+                new NotOptimized(),
             };
 
             VisualizerWindow window = new VisualizerWindow();
             foreach (var optimizer in optimizers)
             {
-                //Console.WriteLine();
                 var assignments = optimizer.AssignParkingSpots(graph, customers);
                 var score = ParkingScorer.Score(assignments);
-                //Console.WriteLine();
-                //var graphVisualizer = new GraphVisualizer(graph.Nodes.First().Value, assignments, score);
                 window.AddGraph(optimizer.GetType().Name, graph, assignments, score);
             }
 

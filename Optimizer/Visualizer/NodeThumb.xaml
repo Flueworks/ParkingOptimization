@@ -10,7 +10,7 @@
         <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="UIElement_OnMouseDown"
                    Height="20" Width="20" Stroke="#FF100A21" StrokeThickness="1" Fill="{Binding FillBrush}"/>
         <Border HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False"
-                   Height="15" Width="10" Background="{Binding AssignedHotelBrush}" BorderThickness="1" BorderBrush="Black">
+                   Height="15" Background="{Binding AssignedHotelBrush}" BorderThickness="1" BorderBrush="Black">
             <TextBlock Text="{Binding Steps}" FontSize="9"/>
         </Border>
     </Grid>

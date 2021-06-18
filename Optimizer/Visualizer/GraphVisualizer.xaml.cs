@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Optimizer.Annotations;
+using Optimizer.Optimizers;
 using Optimizer.Visualizer;
 using Vector = System.Windows.Vector;
 
@@ -63,7 +64,7 @@ namespace Optimizer
 
             addedNodes.Add(node);
 
-            var id = node.Id.Split("-")[0];
+            var id = node.BranchId;
 
             var rotationMatrix = new[]
             {
@@ -75,7 +76,7 @@ namespace Optimizer
                 Vector nextDirection = direction;
                 int nextRotation = rotation;
 
-                var nextId = edge.Id.Split("-")[0];
+                var nextId = edge.BranchId;
                 if (nextId != id || edge is Source)
                 {
                     var rotationAngle = rotationMatrix[rotationindex];

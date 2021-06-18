@@ -31,32 +31,37 @@
             </Canvas.RenderTransform>
         </Canvas>
         
-        <StackPanel Grid.Column="1" >
-            <TextBlock Text="{Binding SelectedNode.Id, Mode=OneWay}"/>
-            <ItemsControl ItemsSource="{Binding SelectedNode.RoutingTable, Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <Run Text="{Binding Key, Mode=OneWay}"/>
-                            <Run Text="{Binding Value, Mode=OneWay}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <DockPanel Grid.Column="1" VerticalAlignment="Stretch" >
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="{Binding SelectedNode.Id, Mode=OneWay}"
+                           FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding SelectedNode.RoutingTable, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Key, Mode=OneWay}"/>
+                                <Run Text="{Binding Value, Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
             
-            <TextBlock>
-                <Run Text="Min:"/><Run Text="{Binding Score.Min, Mode=OneWay}"/>
-            </TextBlock>
-            <TextBlock>
-                <Run Text="Max:"/><Run Text="{Binding Score.Max, Mode=OneWay}"/>
-            </TextBlock>
-            <TextBlock>
-                <Run Text="Average:"/><Run Text="{Binding Score.Average, Mode=OneWay, StringFormat=N2}"/>
-            </TextBlock>
-            <TextBlock>
-                <Run Text="Median:"/><Run Text="{Binding Score.Median, Mode=OneWay}"/>
-            </TextBlock>
-        </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+                <TextBlock>
+                    <Run Text="Min:"/><Run Text="{Binding Score.Min, Mode=OneWay}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Max:"/><Run Text="{Binding Score.Max, Mode=OneWay}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Average:"/><Run Text="{Binding Score.Average, Mode=OneWay, StringFormat=N2}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Median:"/><Run Text="{Binding Score.Median, Mode=OneWay}"/>
+                </TextBlock>
+            </StackPanel>
+        </DockPanel>
         
     </Grid>
 </UserControl>

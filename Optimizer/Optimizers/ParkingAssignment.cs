@@ -1,4 +1,4 @@
-namespace Optimizer
+namespace Optimizer.Optimizers
 {
     public class ParkingAssignment
     {
