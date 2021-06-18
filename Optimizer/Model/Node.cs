@@ -8,6 +8,7 @@ namespace Optimizer
     public class Node
     {
         public string Id { get; }
+        public string BranchId => Id.Split("-")[0];
 
         public Node(string id)
         {
@@ -60,6 +61,14 @@ namespace Optimizer
                 edges += $"{node.Id}, ";
             }
             return edges;
+        }
+    }
+
+    public class Source : Node
+    {
+        /// <inheritdoc />
+        public Source(string id) : base(id)
+        {
         }
     }
 }

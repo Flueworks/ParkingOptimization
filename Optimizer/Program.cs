@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
+using Optimizer.Visualizer;
 
 namespace Optimizer
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             var graph = new Graph();
@@ -14,9 +17,7 @@ namespace Optimizer
             var b = graph.GenerateNodes("B", 5);
             var c = graph.GenerateNodes("C", 3);
             var d = graph.GenerateNodes("D", 3);
-            
 
-            
             // connect second node of section B with 8th node of section A
             // connect first node of section C with 5th node of section A
             //                      B3,B4,B5
@@ -36,6 +37,12 @@ namespace Optimizer
             //             C2  D1 D2 D3
             //             C3
             d[0].Connect(c[1]);
+            
+            
+            a[5].Connect(new Source("A"));
+            b[4].Connect(new Source("B"));
+            c[2].Connect(new Source("C"));
+            d[2].Connect(new Source("D"));
             
             // Set entrance to hotel A at sixth node in section A 
             a[5].PropagateRoutingTable("A", 0);
@@ -65,13 +72,18 @@ namespace Optimizer
                 new FirstAndBestSpotOptimizer(),
             };
 
+            VisualizerWindow window = new VisualizerWindow();
             foreach (var optimizer in optimizers)
             {
-                Console.WriteLine(optimizer.GetType().Name);
+                //Console.WriteLine();
                 var assignments = optimizer.AssignParkingSpots(graph, customers);
-                ParkingScorer.Score(assignments);
-                Console.WriteLine();
+                var score = ParkingScorer.Score(assignments);
+                //Console.WriteLine();
+                //var graphVisualizer = new GraphVisualizer(graph.Nodes.First().Value, assignments, score);
+                window.AddGraph(optimizer.GetType().Name, graph, assignments, score);
             }
+
+            window.ShowDialog();
         }
     }
 
