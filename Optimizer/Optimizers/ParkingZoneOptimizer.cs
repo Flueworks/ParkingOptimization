@@ -85,4 +85,54 @@ namespace Optimizer.Optimizers
             return result;
         }
     }
+    
+    class FillParkingZoneOptimizer : IParkingOptimizer
+    {
+        /// <inheritdoc />
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers)
+        {
+            var freeParkingSpots = graph.ToList();
+            var result = new List<ParkingAssignment>();
+
+            foreach (var hotel in customers.OrderBy(x=>x.Hotel).GroupBy(x=>x.Hotel))
+            {
+                var hotelParkingSpots = new Queue<Node>(freeParkingSpots.OrderBy(x=>x.RoutingTable[hotel.Key]).ToList());
+                foreach (var customer in hotel)
+                {
+                    var spot = hotelParkingSpots.Dequeue();
+                    freeParkingSpots.Remove(spot);
+                    result.Add(new ParkingAssignment(customer, spot));
+                }
+            }
+
+            return result;
+        }
+    }
+    
+    class NiceFillParkingZoneOptimizer : IParkingOptimizer
+    {
+        /// <inheritdoc />
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers)
+        {
+            var freeParkingSpots = graph.ToList();
+            var result = new List<ParkingAssignment>();
+
+            int slots = 3;
+            for (int i = 0; i < customers.Count; i+= customers.Count/slots)
+            {
+                foreach (var hotel in customers.Skip(i).Take(customers.Count/slots).OrderBy(x=>x.Hotel).GroupBy(x=>x.Hotel))
+                {
+                    var hotelParkingSpots = new Queue<Node>(freeParkingSpots.OrderBy(x=>x.RoutingTable[hotel.Key]).ToList());
+                    foreach (var customer in hotel)
+                    {
+                        var spot = hotelParkingSpots.Dequeue();
+                        freeParkingSpots.Remove(spot);
+                        result.Add(new ParkingAssignment(customer, spot));
+                    }
+                }
+            }
+
+            return result;
+        }
+    }
 }

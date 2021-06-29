@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Optimizer.Visualizer"
         mc:Ignorable="d"
-        Title="VisualizerWindow" Height="450" Width="800">
+        Title="VisualizerWindow" Height="650" Width="1000">
     <TabControl Name="Tabs">
         
     </TabControl>

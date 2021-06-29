@@ -183,6 +183,8 @@ namespace Optimizer
             {
                 new ParkingZoneOptimizer(),
                 new PrioritizedParkingZoneOptimizer(),
+                new FillParkingZoneOptimizer(),
+                new NiceFillParkingZoneOptimizer(),
                 new FirstAndBestSpotOptimizer(),
                 new NotOptimized(),
             };
