@@ -13,5 +13,11 @@
                    Height="15" Background="{Binding AssignedHotelBrush}" BorderThickness="1" BorderBrush="Black">
             <TextBlock Text="{Binding Steps}" FontSize="9"/>
         </Border>
+        <Grid.ToolTip>
+            <TextBlock>
+                <Run Text="{Binding Assignment.Customer.Hotel}"/>: 
+                <Run Text="{Binding Steps}"/> steps
+            </TextBlock>
+        </Grid.ToolTip>
     </Grid>
 </UserControl>

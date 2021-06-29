@@ -9,5 +9,6 @@
     <Grid>
         <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="UIElement_OnMouseDown"
                    Height="20" Width="20" Stroke="#FF100A21" StrokeThickness="1" Fill="{Binding FillBrush}"/>
+        <TextBlock Text="{Binding Source.Id}" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

@@ -43,6 +43,14 @@ namespace Optimizer
                 hotel.PropagateRoutingTable(hotel.Id, 0);
             }
         }
+
+        public void AssignParkingToHotels()
+        {
+            foreach (var node in Nodes)
+            {
+                node.BranchId = node.RoutingTable.OrderBy(x => x.Value).First().Key;
+            }
+        }
     }
 
     public class ParkingGarageSection

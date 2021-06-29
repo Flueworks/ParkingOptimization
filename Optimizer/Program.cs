@@ -157,6 +157,7 @@ namespace Optimizer
             parkingGarage.Connect("U2 139", "U2 140 HC", 0);
             
             parkingGarage.PropagateRouting();
+            parkingGarage.AssignParkingToHotels();
 
             var nodes = parkingGarage.Nodes.Where(x => x.RoutingTable.Count == 0).ToList();
 

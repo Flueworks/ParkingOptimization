@@ -9,11 +9,12 @@ namespace Optimizer
     public class Node
     {
         public string Id { get; }
-        public string BranchId => Id.Split(" ")[0];
+        public string BranchId { get; set; }
 
         public Node(string id)
         {
             Id = id;
+            BranchId = Id.Split(" ")[0];
         }
 
         public List<Edge> Edges { get; } = new List<Edge>();
