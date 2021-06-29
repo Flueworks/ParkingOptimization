@@ -126,7 +126,7 @@ namespace Optimizer
             parkingGarage.AddHotel("X1", "G 001 HC");
             parkingGarage.AddHotel("X3", "G 035 HC");
             parkingGarage.AddHotel("X5", "G 065");
-            parkingGarage.AddHotel("X7", "G 088 R");
+            parkingGarage.AddHotel("X7", "G 088 R", -90);
             parkingGarage.AddHotel("X18", "G 172", 90);
             parkingGarage.AddHotel("X20", "F 001");
             parkingGarage.AddHotel("X22", "F 064");
@@ -182,6 +182,7 @@ namespace Optimizer
             List<IParkingOptimizer> optimizers = new List<IParkingOptimizer>()
             {
                 new ParkingZoneOptimizer(),
+                new PrioritizedParkingZoneOptimizer(),
                 new FirstAndBestSpotOptimizer(),
                 new NotOptimized(),
             };

@@ -39,4 +39,50 @@ namespace Optimizer.Optimizers
             return result;
         }
     }
+
+    class PrioritizedParkingZoneOptimizer : IParkingOptimizer
+    {
+        /// <inheritdoc />
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers)
+        {
+            var freeParkingSpots = graph.ToList();
+            var result = new List<ParkingAssignment>();
+            var remainingCustomers = customers.ToList();
+
+            var sections = graph.GroupBy(x => x.BranchId)
+                .ToDictionary(x=>x.Key, x=> new List<Node>(x.Select(y=>y).OrderBy(n => n.RoutingTable[x.Key]).ToList()));
+            foreach (var customer in customers)
+            {
+                var section = sections[customer.Hotel];
+
+                if (section.Count > 0)
+                {
+                    var spot = section.First();
+                    section.Remove(spot);
+                    freeParkingSpots.Remove(spot);
+                    result.Add(new ParkingAssignment(customer, spot));
+                    remainingCustomers.Remove(customer);
+                }
+                else
+                {
+                    // if customer has priority, try to find a free parking spot close by.
+                    var bestParkingSpot = freeParkingSpots.OrderBy(x => x.RoutingTable[customer.Hotel]).First();
+                    if(bestParkingSpot.RoutingTable[customer.Hotel] > 20)
+                        continue;
+                    freeParkingSpots.Remove(bestParkingSpot);
+                    sections[bestParkingSpot.BranchId].Remove(bestParkingSpot);
+                    result.Add(new ParkingAssignment(customer,bestParkingSpot));
+                    remainingCustomers.Remove(customer);
+                }
+            }
+            foreach (var customer in remainingCustomers)
+            {
+                var bestParkingSpot = freeParkingSpots.OrderBy(x => x.RoutingTable[customer.Hotel]).First();
+                freeParkingSpots.Remove(bestParkingSpot);
+                result.Add(new ParkingAssignment(customer,bestParkingSpot));
+            }
+
+            return result;
+        }
+    }
 }
