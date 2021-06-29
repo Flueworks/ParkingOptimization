@@ -22,7 +22,7 @@ namespace Optimizer
                 Nodes.Add(nodeId, node);
                 result.Add(node);
                 
-                previousNode?.Connect(node);
+                Edge.Connect(previousNode, node, 0);
                 previousNode = node;
             }
 

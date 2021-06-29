@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Optimizer
@@ -8,20 +9,14 @@ namespace Optimizer
     public class Node
     {
         public string Id { get; }
-        public string BranchId => Id.Split("-")[0];
+        public string BranchId => Id.Split(" ")[0];
 
         public Node(string id)
         {
             Id = id;
         }
 
-        public List<Node> Edges { get; } = new List<Node>();
-
-        public void Connect(Node node)
-        {
-            node.Edges.Add(this);
-            Edges.Add(node);
-        }
+        public List<Edge> Edges { get; } = new List<Edge>();
 
         public Dictionary<string, int> RoutingTable { get; } = new Dictionary<string, int>();
 
@@ -52,16 +47,31 @@ namespace Optimizer
             }
             return routingTable;
         }
-        
-        public string WriteEdges()
+    }
+
+    public class Edge
+    {
+        public Node Node { get; }
+        public int Angle { get; }
+
+        public static void Connect(Node a, Node b, int angle)
         {
-            string edges = $"{Id}: ";
-            foreach (var node in Edges)
-            {
-                edges += $"{node.Id}, ";
-            }
-            return edges;
+            if(a == null || b == null)
+                return;
+            var edge1 = new Edge(b, angle);
+            var edge2 = new Edge(a, 0); //angle does not work...
+            
+            a.Edges.Add(edge1);
+            b.Edges.Add(edge2);
         }
+
+        private Edge(Node node, int angle)
+        {
+            Node = node;
+            Angle = angle;
+        }
+
+        public void PropagateRoutingTable(string name, int value) => Node.PropagateRoutingTable(name, value);
     }
 
     public class Source : Node

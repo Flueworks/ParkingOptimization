@@ -11,7 +11,7 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Canvas Name="nodeCanvas" Height="10000" Width="10000" Background="White"
+        <Canvas Name="nodeCanvas" Width="10000" Height="10000" Background="Gray"
                 MouseEnter="nodeCanvas_MouseEnter"
                 MouseMove="nodeCanvas_MouseMove"
                 MouseDown="nodeCanvas_MouseDown"

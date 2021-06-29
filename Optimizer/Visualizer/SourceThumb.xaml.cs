@@ -32,7 +32,22 @@ namespace Optimizer.Visualizer
                 "H" => Brushes.LightPink,
                 "I" => Brushes.RosyBrown,
                 "J" => Brushes.SteelBlue,
-                _ => Brushes.Black
+                
+                "X1" => Brushes.BurlyWood,
+                "X3" => Brushes.BurlyWood,
+                "X5" => Brushes.BurlyWood,
+                "X7" => Brushes.BurlyWood,
+                "X18" => Brushes.BurlyWood,
+                "X20" => Brushes.Plum,
+                "X22" => Brushes.Plum,
+                "X24" => Brushes.Plum,
+                "X16" => Brushes.Khaki,
+                "X14" => Brushes.LightSeaGreen,
+                "X12" => Brushes.LightSeaGreen,
+                "X10" => Brushes.LightSalmon,
+                "X4" => Brushes.LightSkyBlue,
+                "X2" => Brushes.LightGreen,
+                _ => Brushes.LightGray
             };
         }
 

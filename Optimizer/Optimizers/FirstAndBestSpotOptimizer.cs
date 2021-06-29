@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,9 +9,9 @@ namespace Optimizer.Optimizers
     /// </summary>
     public class FirstAndBestSpotOptimizer : IParkingOptimizer
     {
-        public List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers)
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers)
         {
-            var freeParkingSpots = graph.Nodes.Values.ToList();
+            var freeParkingSpots = graph.ToList();
 
             List<ParkingAssignment> result = new List<ParkingAssignment>();
             foreach (var customer in customers)
@@ -27,12 +28,11 @@ namespace Optimizer.Optimizers
     public class NotOptimized : IParkingOptimizer
     {
         /// <inheritdoc />
-        public List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers)
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> spots, List<Customer> customers)
         {
             List<ParkingAssignment> result = new List<ParkingAssignment>();
-            var spots = graph.Nodes.Values.ToList();
 
-            for (int i = 0; i < spots.Count; i++)
+            for (int i = 0; i < Math.Min(customers.Count, spots.Count); i++)
             {
                 result.Add(new ParkingAssignment(customers[i], spots[i]));
             }
@@ -43,6 +43,6 @@ namespace Optimizer.Optimizers
 
     public interface IParkingOptimizer
     {
-        List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers);
+        List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers);
     }
 }

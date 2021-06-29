@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Optimizer.Annotations;
 using Optimizer.Optimizers;
 using Optimizer.Visualizer;
@@ -16,7 +18,7 @@ namespace Optimizer
 {
     public partial class GraphVisualizer : UserControl, INotifyPropertyChanged
     {
-        public GraphVisualizer(Graph graph, List<ParkingAssignment> assignments, Score score)
+        public GraphVisualizer(List<Node> graph, List<ParkingAssignment> assignments, Score score)
         {
             InitializeComponent();
             DataContext = this;
@@ -24,7 +26,7 @@ namespace Optimizer
             ScaleFactor = 1M;
 
             _assignments = assignments;
-            AddNodeInternal(graph.Nodes.First().Value, new Point(100, 100), new Vector(25, 0));
+            AddNodeInternal(graph.First(), new Point(5000, 5000), new Vector(0, 25));
             Score = score;
         }
 
@@ -33,9 +35,7 @@ namespace Optimizer
         private List<ParkingAssignment> _assignments;
         public Score Score { get; set; }
 
-        int rotationindex = 0;
-
-        private void AddNodeInternal(Node node, Point point, Vector direction, int rotation = 0)
+        private async void AddNodeInternal(Node node, Point point, Vector direction, int rotation = 0)
         {
             var newPoint = Vector.Add(direction, point);
 
@@ -58,40 +58,37 @@ namespace Optimizer
                 Canvas.SetLeft(nodeThumb, newPoint.X);
                 Canvas.SetTop(nodeThumb, newPoint.Y);
                 nodeThumb.Select += OnSelectNode;
+                //nodeThumb.LayoutTransform = new RotateTransform(rotation, 10, 10);
             }
 
-            //nodeThumb.LayoutTransform = new RotateTransform(rotation, 10, 10);
+            
+            Line line = new Line()
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 1,
+                X1 = point.X + 10,
+                X2 = newPoint.X + 10,
+                Y1 = point.Y + 10,
+                Y2 = newPoint.Y + 10
+            };
+            nodeCanvas.Children.Add(line);
+            
+            
 
             addedNodes.Add(node);
 
             var id = node.BranchId;
 
-            var rotationMatrix = new[]
-            {
-                90, -90
-            };
-
             foreach (var edge in node.Edges)
             {
-                Vector nextDirection = direction;
-                int nextRotation = rotation;
+                var rotationAngle = edge.Angle;
+                var identity = Matrix.Identity;
+                identity.Rotate(rotationAngle);
+                var nextDirection = identity.Transform(direction);
+                var nextRotation = rotation + rotationAngle;
 
-                var nextId = edge.BranchId;
-                if (nextId != id || edge is Source)
-                {
-                    var rotationAngle = rotationMatrix[rotationindex];
-                    rotationindex += 1;
-                    rotationindex %= rotationMatrix.Length;
-                    var identity = Matrix.Identity;
-                    identity.Rotate(rotationAngle);
-                    nextDirection = identity.Transform(direction);
-                    nextRotation = rotation + rotationAngle;
-                }
-
-
-                AddNodeInternal(edge, newPoint, nextDirection, nextRotation);
+                AddNodeInternal(edge.Node, newPoint, nextDirection, nextRotation);
             }
-
         }
 
         private void OnSelectNode(Node node)
@@ -123,7 +120,7 @@ namespace Optimizer
 
 
         public static readonly DependencyProperty ScaleFactorProperty = DependencyProperty.Register(
-            "ScaleFactor", typeof(Decimal), typeof(GraphVisualizer), new PropertyMetadata(default(Decimal)));
+            "ScaleFactor", typeof(Decimal), typeof(GraphVisualizer), new PropertyMetadata(1000m));
 
         public Decimal ScaleFactor
         {
@@ -132,7 +129,7 @@ namespace Optimizer
         }
 
         public static readonly DependencyProperty TranslateXProperty = DependencyProperty.Register(
-            "TranslateX", typeof(int), typeof(GraphVisualizer), new PropertyMetadata(default(int)));
+            "TranslateX", typeof(int), typeof(GraphVisualizer), new PropertyMetadata(-4700));
 
         public int TranslateX
         {
@@ -141,7 +138,7 @@ namespace Optimizer
         }
 
         public static readonly DependencyProperty TranslateYProperty = DependencyProperty.Register(
-            "TranslateY", typeof(int), typeof(GraphVisualizer), new PropertyMetadata(default(int)));
+            "TranslateY", typeof(int), typeof(GraphVisualizer), new PropertyMetadata(-5200));
 
         public int TranslateY
         {

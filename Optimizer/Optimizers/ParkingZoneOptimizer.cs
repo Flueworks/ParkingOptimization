@@ -5,13 +5,14 @@ namespace Optimizer.Optimizers
 {
     public class ParkingZoneOptimizer : IParkingOptimizer
     {
-        public List<ParkingAssignment> AssignParkingSpots(Graph graph, List<Customer> customers)
+        // currently broken because hotels are named X1 instead of A, B, C etc...
+        public List<ParkingAssignment> AssignParkingSpots(List<Node> graph, List<Customer> customers)
         {
-            var sections = graph.Nodes.Values.GroupBy(x => x.BranchId).ToDictionary(x=>x.Key, x=>x.Select(y=>y).ToList());
+            var sections = graph.GroupBy(x => x.BranchId).ToDictionary(x=>x.Key, x=>x.Select(y=>y).ToList());
 
             var result = new List<ParkingAssignment>();
 
-            var freeParkingSpots = graph.Nodes.Values.ToList();
+            var freeParkingSpots = graph.ToList();
             var remainingCustomers = customers.ToList();
             foreach (var section in sections)
             {
